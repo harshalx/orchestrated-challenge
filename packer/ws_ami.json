@@ -1,0 +1,33 @@
+{
+  "variables":{
+   "aws_access_key": "",
+   "aws_secret_key": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{ user `aws_access_key`}}",
+    "secret_key": "{{ user `aws_secret_key`}}",
+    "region": "us-west-2",
+    "instance_type": "t2.micro",
+    "ami_name": "webserver-artifact-{{user `ws_artifacts_version`}}",
+    "ssh_username": "ec2-user",
+    "source_ami": "ami-aa5ebdd2"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo yum install -y httpd",
+      "mkdir ~/.aws",
+      "echo '[default]' > ~/.aws/credentials",
+      "echo 'aws_access_key_id=${aws_access_key}' >> ~/.aws/credentials",
+      "echo 'aws_secret_access_key=${aws_secret_key}' >> ~/.aws/credentials",
+      "echo '[default]' > ~/.aws/config",
+      "echo 'region = us-west-2' >> ~/.aws/config",
+      "wget -O /tmp/orchestrated-ws-1.0.zip https://s3-us-west-2.amazonaws.com/orchestrated/orchestrated-ws-1.0.zip",
+      "sudo unzip -d /var/www/html /tmp/orchestrated-ws-1.0.zip",
+      "sudo service httpd start",
+      "sudo chkconfig httpd on"
+    ]
+  }]
+}
