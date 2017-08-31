@@ -1,10 +1,10 @@
 
 variable "aws_access_key" {
-	default=""
+	default="AKIAJSQG7R5O5M3QIMYQ"
 }
 
 variable "aws_secret_key" {
-	default=""
+	default="Bfk4IH6oKn2mkUypYWi0Ju5t6q7PKbDFYgeiKpV2"
 }
 
 variable "aws_region" {
@@ -21,6 +21,10 @@ variable "as_artifacts_version" {
 
 variable "keypair_name" {
 	default = "hv"
+}
+
+variable "desired_capacity" {
+	default = "3"
 }
 
 variable "elb_subnets" {

@@ -29,6 +29,7 @@
 * At the moment Apache Web Server isn't configured to route traffic to Tomcat. This is mentioned as a requirement in the challege and is easy to implement but I am not doing it due to delays already and lack of time. 
 * I haven't implemented Prevayler as a DB too as I am just using a sample Tomcat off-the-shelf war file. 
 * I have assumed that the networking setup at AWS is already present. The codebase can be improved to create VPC, Public and Private subnets and Internet Gateways.
+* The created ELB's could be mapped to public friendly URL's like challenge.orchestrated.com by creating a hosted zone and registering a domain. 
 
 ### How to Run the codebase
 
@@ -52,6 +53,16 @@
 ## Teardown the infra
 
 * Run teardown.sh <training/production>. Give the right env as input. Don't forget this. 
+
+## Scale the infra up or down
+
+* This is easy with Terraform.
+* Update the desired_capacity variable in terraform/variables.tf file to the # of instances you wany the prod infra to scale. 
+* Either Run scripts/build_infra.sh <training/production> or better yet follow this procedure
+** cd terraform
+** terraform plan -state=production.state
+** Ensure that the change in instances is being picked up. 
+** Run terraform apply -state=production.state
 
 
 

@@ -63,6 +63,7 @@ resource "aws_autoscaling_group" "appserver-asg" {
   name		     = "appserver-${var.env}-asg-group"
   max_size	     = 4
   min_size	     = 2
+  desired_capacity   = "${var.desired_capacity}"
   default_cooldown   = 120
   launch_configuration = "${aws_launch_configuration.appserver-lc.name}"
   health_check_type = "EC2"

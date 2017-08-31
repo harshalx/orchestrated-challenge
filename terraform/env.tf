@@ -1,3 +1,3 @@
 variable "env" {
-	default = "training"
+	default = "production"
 }
