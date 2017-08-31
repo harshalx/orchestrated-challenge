@@ -57,12 +57,13 @@
 ## Scale the infra up or down
 
 * This is easy with Terraform.
-* Update the desired_capacity variable in terraform/variables.tf file to the # of instances you wany the prod infra to scale. 
+* Update the desired_capacity variable in terraform/variables.tf file to the # of instances you want the prod infra to scale. 
+* Ensure that the # is between the min and max instances defined for the ASG. If you need to go beyond that, modify the min max variables and then the desired_capacity variable.
 * Either Run scripts/build_infra.sh <training/production> or better yet follow this procedure
-** cd terraform
-** terraform plan -state=production.state
-** Ensure that the change in instances is being picked up. 
-** Run terraform apply -state=production.state
+  * cd terraform
+  * terraform plan -state=production.state
+  * Ensure that the change in instances is being picked up. 
+  * Run terraform apply -state=production.state
 
 
 
