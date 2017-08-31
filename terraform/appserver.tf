@@ -10,7 +10,7 @@ data "aws_ami" "appserver_ami" {
 }
 
 
-resource "aws_elb" "appserver_elb" {
+resource "aws_elb" "appserver-elb" {
   name               = "appserver-elb-${var.env}"
 #  availability_zones = ["us-west-2a", "us-west-2c"]
   internal           = false
@@ -48,8 +48,8 @@ resource "aws_elb" "appserver_elb" {
 
 }
 
-resource "aws_launch_configuration" "appserver_lc" {
-  name	= "appsever_lc"
+resource "aws_launch_configuration" "appserver-lc" {
+  name	= "appsever-${var.env}-lc"
   image_id = "${data.aws_ami.appserver_ami.id}"
   instance_type = "t2.micro"
   key_name = "${var.keypair_name}"
@@ -58,20 +58,19 @@ resource "aws_launch_configuration" "appserver_lc" {
   user_data = "${file("userdata.sh")}"
 }
 
-resource "aws_autoscaling_group" "appserver_asg" {
+resource "aws_autoscaling_group" "appserver-asg" {
   availability_zones = "${var.avl_zones}"
-  name		     = "appserver_asg_group"
+  name		     = "appserver-${var.env}-asg-group"
   max_size	     = 4
   min_size	     = 2
   default_cooldown   = 120
-  launch_configuration = "${aws_launch_configuration.appserver_lc.name}"
+  launch_configuration = "${aws_launch_configuration.appserver-lc.name}"
   health_check_type = "EC2"
   vpc_zone_identifier = "${var.instance_subnets}"
   force_delete = "false"
   tags		      = [{
 			  key = "Name"
-#			  value = "${format("appserver-%s", var.env)}"
-			  value = "Aeradmin-app-test"
+			  value = "${format("appserver-%s", var.env)}"
  			  propagate_at_launch = true
 		        },
 			 {
@@ -79,6 +78,6 @@ resource "aws_autoscaling_group" "appserver_asg" {
 			  value = "${var.env}"
 			  propagate_at_launch = true
 			 }]
-  load_balancers     = ["${aws_elb.appserver_elb.name}"]
+  load_balancers     = ["${aws_elb.appserver-elb.name}"]
 
 }

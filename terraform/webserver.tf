@@ -48,7 +48,7 @@ resource "aws_elb" "webserver_elb" {
 }
 
 resource "aws_launch_configuration" "gen_lc" {
-  name	= "generic_lc"
+  name	= "webserver-${var.env}-lc"
   image_id = "${data.aws_ami.webserver_ami.id}"
   instance_type = "t2.micro"
   key_name = "${var.keypair_name}"
@@ -58,7 +58,7 @@ resource "aws_launch_configuration" "gen_lc" {
 
 resource "aws_autoscaling_group" "gen_asg" {
   availability_zones = "${var.avl_zones}"
-  name		     = "gen_asg_group"
+  name		     = "webserver-${var.env}-asg-group"
   max_size	     = 4
   min_size	     = 2
   default_cooldown   = 120
@@ -68,8 +68,7 @@ resource "aws_autoscaling_group" "gen_asg" {
   force_delete = "false"
   tags		      = [{
 			  key = "Name"
-#			  value = "${format("webserver-%s", var.env)}"
-			  value = "Aeradmin-test"
+			  value = "${format("webserver-%s", var.env)}"
  			  propagate_at_launch = true
 		        },
 			 {
