@@ -1,10 +1,10 @@
 
 variable "aws_access_key" {
-	default="AKIAJSQG7R5O5M3QIMYQ"
+	default=""
 }
 
 variable "aws_secret_key" {
-	default="Bfk4IH6oKn2mkUypYWi0Ju5t6q7PKbDFYgeiKpV2"
+	default=""
 }
 
 variable "aws_region" {
